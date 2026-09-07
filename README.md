@@ -41,7 +41,7 @@ Ironclad does not ask you to type `claude --model …` for each job. On the **co
 
 | On PATH | Models that then appear |
 |---|---|
-| `codex` | `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-atra`, `gpt-5.6-luna` |
+| `codex` | `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-6-astra`, `gpt-5.6-luna` |
 | `claude` | `fable`, `opus`, `sonnet`, `claude-fable-5-1` |
 | `grok` | `grok-4.6` |
 | `kimi` | `kimi-k3`, `kimi-k2.5` |
