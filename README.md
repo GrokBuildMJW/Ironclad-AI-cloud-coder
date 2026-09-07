@@ -44,7 +44,7 @@ The binaries live **here, locally**. Spark only serves the orchestrator. Probed 
 | On PATH | How we listed models | Coding-lane set |
 |---|---|---|
 | `codex` | live `models_cache.json` (9 slugs). Default in `config.toml`: `gpt-5.6-sol` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna` |
-| `claude` | `--help` aliases | `fable`, `opus`, `sonnet` |
+| `claude` | `--help` aliases | `claude-fable-5`, `claude-opus-5`, `claude-sonnet-5` |
 | `grok` | `grok models` | `grok-4.6` (default), `grok-4.5` |
 | `kimi` | `kimi provider list --json` | `k3` (default), `k3-256k`, `kimi-for-coding`, `kimi-for-coding-highspeed` |
 
