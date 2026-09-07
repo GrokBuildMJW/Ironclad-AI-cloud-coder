@@ -4,7 +4,7 @@ The **orchestrator** always talks to a **local Spark**. A **cloud coder** is onl
 
 Public sources will live in the `ironclad` repo. This tree explains the idea. It is not those sources.
 
-![A local computer sending a light path up into a remote cloud](docs/images/hero-local-to-cloud.jpg)
+![Ironclad as a local shielded core steering four locked coder streams into the cloud](docs/images/hero-local-to-cloud.jpg)
 
 ## The one picture
 
