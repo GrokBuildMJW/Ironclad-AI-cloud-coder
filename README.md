@@ -27,6 +27,8 @@ Without Spark, chat and process runs still have no orchestrator. Cloud coder doe
 
 **Way B — vendor CLI.** Ironclad starts a binary on `PATH` (`codex`, `claude`, `grok`, `kimi`, …) for the coding task class. That CLI talks to the vendor. Missing binary: Ironclad **refuses**. It does not fall back to Spark or to HTTP.
 
+That path also works with **multi-subscription** usage. Example: **two Claude subscriptions**. Same `claude` binary, two seats. Each seat is a PATH shim that sets `CLAUDE_CONFIG_DIR` to its own tree (for example `~/.claude-sub1` and `~/.claude-sub2`) so the two logins stay apart. Do not point a headless seat at the interactive `~/.claude` directory. Ironclad probes each shim. An exhausted or missing seat is `INFRA` for that seat, not a fallback to Spark.
+
 The coding route names that profile. `llm.orchestrator_profile` stays the Spark key. Callers do not pick the model in the chat box.
 
 ## Detect, list models, run `--print`
@@ -100,7 +102,7 @@ Set `CLOUD_CODER_KEY` in the process that starts Ironclad. Never commit it. Unre
 
 ## What this costs
 
-Spark electricity stays. Cloud tokens apply **only when the coding lane runs**. Chat on Spark does not hit the vendor meter.
+Spark electricity stays. Cloud tokens apply **only when the coding lane runs**. Chat on Spark does not hit the vendor meter. A vendor CLI can be a **subscription** (monthly login / quota) instead of `${env:CLOUD_CODER_KEY}`. Two Claude subscriptions are two quotas.
 
 Treat coding prompts as leaving the building: excerpts Ironclad puts in that request go to the vendor. The orchestrator prompt stays on the LAN.
 
@@ -120,6 +122,7 @@ Treat coding prompts as leaving the building: excerpts Ironclad puts in that req
 - Not “put chat in the cloud.” Only the coding lane.
 - Not a promise that coding prompts stay on your LAN.
 - Not a vendor comparison and not an API-key store.
+- Not “one Claude login for every coding turn.” Two Claude subscriptions stay two seats.
 
 ## License
 

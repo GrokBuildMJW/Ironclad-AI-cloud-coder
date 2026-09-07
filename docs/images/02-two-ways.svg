@@ -21,12 +21,13 @@
     <text x="584" y="210" fill="#b7c4d2" font-size="15">coding task class → subprocess</text>
     <text x="584" y="236" fill="#8b9aab" font-size="14">codex, claude, grok, kimi, …</text>
     <text x="584" y="258" fill="#8b9aab" font-size="14">The binary talks to the vendor</text>
-    <text x="584" y="280" fill="#8b9aab" font-size="14">Auth stays in that CLI’s home</text>
+    <text x="584" y="280" fill="#8b9aab" font-size="14">Auth per seat (CLAUDE_CONFIG_DIR)</text>
     <text x="584" y="316" fill="#8b9aab" font-size="14">Missing binary: refuse, no fallback.</text>
   </g>
 
-  <rect x="40" y="380" rx="12" width="1020" height="130" fill="#151c24" stroke="#2a3544"/>
+  <rect x="40" y="380" rx="12" width="1020" height="140" fill="#151c24" stroke="#2a3544"/>
   <text x="60" y="414" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="15">Spark still answers chat.</text>
   <text x="60" y="440" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">If the CLI is missing, Ironclad does not send that code turn to Spark instead.</text>
-  <text x="60" y="464" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Configure the coding route you mean. Leave orchestrator_profile on Spark.</text>
+  <text x="60" y="464" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Multi-subscription works here. Example: two Claude subscriptions, two CLAUDE_CONFIG_DIR seats, same claude binary.</text>
+  <text x="60" y="488" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Configure the coding route you mean. Leave orchestrator_profile on Spark.</text>
 </svg>
