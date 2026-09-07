@@ -35,11 +35,11 @@ The coding route names that profile. `llm.orchestrator_profile` stays the Spark 
 
 Ironclad does not ask you to type `claude --model …` for each job. On the **coding lane** it:
 
-1. Probes `PATH` for the usual suspects (`codex`, `claude`, `grok`, `kimi`) with a cheap `--version`. That probe does not log in.
+1. Probes **local `PATH`** on the Ironclad box (this workstation, not Spark) for the usual suspects (`codex`, `claude`, `grok`, `kimi`) with a cheap `--version`. That probe does not log in.
 2. If the **executable** is there, **every declared model row** for that harness is offered. One `claude` binary yields `fable`, `opus`, and `sonnet` — there is no second probe per model name.
 3. Dispatch is **headless print**: one shot, no TUI. Claude: `--print`. Codex: `exec`. Grok: `--output-format plain --single`. Kimi: `--prompt`. Stdout is the answer, then the CLI exits.
 
-Probed on a logged-in Windows host (2026-09-07): Codex 0.153.2, Claude Code 2.1.263, Grok 1.0.13, Kimi 0.34.0.
+The binaries live **here, locally**. Spark only serves the orchestrator. Probed on this logged-in workstation (2026-09-07): Codex 0.153.2, Claude Code 2.1.263, Grok 1.0.13, Kimi 0.34.0.
 
 | On PATH | How we listed models | Coding-lane set |
 |---|---|---|
