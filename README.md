@@ -1,6 +1,6 @@
 # Ironclad with a cloud coder
 
-Ironclad is the conductor on **your** machine. A **cloud coder** is a remote model that does the thinking. You do not need a Spark or a 4090 for this path. You do need an LLM: without one, Ironclad boots and then refuses chat and process runs.
+The **orchestrator** always talks to a **local Spark**. A **cloud coder** is only the **coding lane**: the step that writes or patches code. Chat, process steering, and tool-loop admission stay on Spark.
 
 Public sources will live in the `ironclad` repo. This tree explains the idea. It is not those sources.
 
@@ -8,35 +8,69 @@ Public sources will live in the `ironclad` repo. This tree explains the idea. It
 
 ## The one picture
 
-![Ironclad on your machine, coder model in the cloud, prompts out and answers back](docs/images/01-who-does-what.svg)
+![Spark orchestrator local, Ironclad in the middle, cloud coder only on the coding lane](docs/images/01-who-does-what.svg)
 
-| Stays local | Goes to the cloud |
+| Lane | Where the model lives |
 |---|---|
-| Ironclad server, vault, tools, approvals | The prompt Ironclad builds |
-| Workspace files on disk | Tool *schemas* (names and argument shapes) |
-| Running `list_dir` and other tools | Never a raw mount of your disk |
+| **Orchestrator** (chat, process, tool loop) | Local Spark, `egress: local` |
+| **Coding lane** (the Code checkpoint) | Cloud coder, `egress: external` |
 
-The model never “logs into” your PC. Ironclad calls it, then Ironclad runs tools itself.
+Ironclad never mounts your disk in the cloud. It sends a prompt (and tool schemas) for that coding turn, gets text or a tool call back, then runs tools itself next to Spark.
 
-## Two ways to attach the cloud
+Without Spark, chat and process runs still have no orchestrator. Cloud coder does **not** replace Spark.
 
-![HTTP profile versus vendor CLI](docs/images/02-two-ways.svg)
+## Two ways to attach the coding lane
 
-**Way A — HTTP profile.** Ironclad POSTs to `<base_url>/chat/completions` (OpenAI-compatible, streaming). You declare `egress: external` and an API key as `${env:CLOUD_CODER_KEY}`.
+![HTTP profile versus vendor CLI, coding lane only](docs/images/02-two-ways.svg)
 
-**Way B — vendor CLI.** Ironclad starts a binary on `PATH` (`claude`, `grok`, `codex`, `kimi`, …). That CLI still talks to the vendor. If the binary is missing, Ironclad **refuses**. It does not silently switch to HTTP.
+**Way A — HTTP profile.** Ironclad POSTs to `<base_url>/chat/completions` for the **coding** profile only. `egress: external`, key as `${env:CLOUD_CODER_KEY}`.
 
-Pick one path and configure that path. Callers do not type a model name into the chat box. `llm.orchestrator_profile` (or the one `active` profile) chooses.
+**Way B — vendor CLI.** Ironclad starts a binary on `PATH` (`codex`, `claude`, `grok`, `kimi`, …) for the coding task class. That CLI talks to the vendor. Missing binary: Ironclad **refuses**. It does not fall back to Spark or to HTTP.
+
+The coding route names that profile. `llm.orchestrator_profile` stays the Spark key. Callers do not pick the model in the chat box.
+
+## Detect, list models, run `--print`
+
+![PATH probe of vendor CLIs, automatic model rows, headless print](docs/images/04-coding-lane-detect.svg)
+
+Ironclad does not ask you to type `claude --model …` for each job. On the **coding lane** it:
+
+1. Probes `PATH` for the usual suspects (`codex`, `claude`, `grok`, `kimi`) with a cheap `--version`. That probe does not log in.
+2. If the **executable** is there, **every declared model row** for that harness is offered. One `claude` binary yields `fable`, `opus`, and `claude-fable-5-1` — there is no second probe per model name.
+3. Dispatch is **headless print**: one shot, no TUI. For Claude that is `--print`. The others use the same idea (one-shot flags, stdout is the answer, then exit).
+
+| On PATH | Models that then appear |
+|---|---|
+| `codex` | `gpt-5.6-sol`, `gpt-5.6-terra` |
+| `claude` | `fable`, `opus`, `claude-fable-5-1` |
+| `grok` | `grok-4.1-fast`, `grok-code-fast-1` |
+| `kimi` | `kimi-k3`, `kimi-k2.5` |
+
+A missing binary is `INFRA`, not “use Spark instead.” Spark never sits in that PATH list.
 
 ## Config sketch (no secrets)
+
+Spark remains the orchestrator. The cloud profile is a second key, used only by the coding lane.
 
 ```yaml
 llm:
   base_url_allowed_hosts:
+    - 127.0.0.1
     - api.example.com
-  orchestrator_profile: cloud
+  orchestrator_profile: spark
   profiles:
-    cloud:
+    spark:
+      base_url: http://127.0.0.1:8000/v1
+      api_key: null
+      model: Qwen3.8-Flash-Next
+      egress: local
+      model_identity:
+        kind: hosted
+        provider: sglang
+        model_id: Qwen3.8-Flash-Next
+      max_output_tokens: 4096
+      default_thinking_policy: disabled
+    cloud_coder:
       base_url: https://api.example.com/v1
       api_key: ${env:CLOUD_CODER_KEY}
       model: example-coder
@@ -48,41 +82,39 @@ llm:
       input_usd_per_1m_tokens: 1.25
       output_usd_per_1m_tokens: 5.0
       max_output_tokens: 4096
-      max_concurrent_requests: 4
       default_thinking_policy: disabled
 ```
 
-- Put the real host in `base_url_allowed_hosts` or Ironclad will not call it.
-- `egress: external` is a declaration, not inferred from the URL.
-- External profiles **must** declare both USD rates. That is how the budget middleware can stop a runaway turn before money leaves.
-- A local Spark/4090 profile may omit prices (zero-cost). Do not copy that onto a cloud profile.
+- `orchestrator_profile: spark` is not the cloud key.
+- External **coding** profiles must declare both USD rates so budgets can stop a runaway code turn.
+- Spark may omit prices (local, zero-cost). Do not copy that onto `cloud_coder`.
+- Put every `base_url` host in `base_url_allowed_hosts`.
 
-![API key in the environment, USD rates required for external egress](docs/images/03-secrets-and-cost.svg)
+![API key in the environment; only the coding profile is metered](docs/images/03-secrets-and-cost.svg)
 
-Set `CLOUD_CODER_KEY` in the process that starts Ironclad. Never commit the token. An unresolved `${env:…}` means no HTTP request is sent.
+Set `CLOUD_CODER_KEY` in the process that starts Ironclad. Never commit it. Unresolved `${env:…}`: no cloud request is sent. Spark stays keyless if the local server is keyless.
 
 ## What this costs
 
-You skip GPU hardware. You pay the vendor per token. GitHub Actions is unrelated (that is the [self-hosted CI lab](https://github.com/GrokBuildMJW/Ironclad-AI-self-hosted-GitHub-CI)).
+Spark electricity stays. Cloud tokens apply **only when the coding lane runs**. Chat on Spark does not hit the vendor meter.
 
-Treat prompts as leaving the building: repo excerpts Ironclad puts in the request go to the vendor.
+Treat coding prompts as leaving the building: excerpts Ironclad puts in that request go to the vendor. The orchestrator prompt stays on the LAN.
 
 ## When to use which lab
 
-| Path | Hardware | LLM |
-|---|---|---|
-| [Minimal hardware](https://github.com/GrokBuildMJW/Ironclad-AI-minimal-hardware) | One PC, Docker | Cloud (this repo) or a small local API |
-| This repo | Same PC, no extra GPU | **Cloud coder** |
-| [Qwen3-Coder on RTX 4090](https://github.com/GrokBuildMJW/Qwen3-Coder-30B-A3B-Q4_K_M-llama.cpp-RTX-4090) | Consumer GPU | Local coder |
-| [Flash-Next on Spark](https://github.com/GrokBuildMJW/Qwen3.8-Flash-Next-NVFP4-SGLang-DGX-Spark) | DGX Spark | Local orchestrator |
-| [Self-hosted CI](https://github.com/GrokBuildMJW/Ironclad-AI-self-hosted-GitHub-CI) | Mini-PCs | Not an LLM path |
-
-Minimal Docker plus this cloud profile is the usual “no Spark” combo: engine in a container, brain in the cloud.
+| Path | Role |
+|---|---|
+| [Flash-Next on Spark](https://github.com/GrokBuildMJW/Qwen3.8-Flash-Next-NVFP4-SGLang-DGX-Spark) | **Required** local orchestrator |
+| This repo | Coding lane in the cloud |
+| [Qwen3-Coder on RTX 4090](https://github.com/GrokBuildMJW/Qwen3-Coder-30B-A3B-Q4_K_M-llama.cpp-RTX-4090) | Coding lane on a local GPU instead |
+| [Minimal hardware](https://github.com/GrokBuildMJW/Ironclad-AI-minimal-hardware) | Engine in Docker on one PC (still needs Spark or another orchestrator API) |
+| [Self-hosted CI](https://github.com/GrokBuildMJW/Ironclad-AI-self-hosted-GitHub-CI) | GitHub Actions, not an LLM path |
 
 ## What this is not
 
-- Not a local GPU recipe.
-- Not a promise that cloud output stays on your LAN.
+- Not a Spark replacement. Orchestrator stays local.
+- Not “put chat in the cloud.” Only the coding lane.
+- Not a promise that coding prompts stay on your LAN.
 - Not a vendor comparison and not an API-key store.
 
 ## License

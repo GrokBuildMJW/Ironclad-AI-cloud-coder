@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" role="img" aria-labelledby="t4 d4">
+  <title id="t4">Coding lane detects vendor CLIs and offers their models</title>
+  <desc id="d4">PATH probe finds claude, grok, codex, kimi. Declared models appear automatically. Dispatch is headless print, not an interactive TUI.</desc>
+  <rect width="1100" height="640" fill="#0b0f14"/>
+  <text x="40" y="44" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="24" font-weight="700">Coding lane: detect, then print</text>
+  <text x="40" y="70" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Ironclad looks on PATH. What it finds, it can run headless. What it does not find, it refuses.</text>
+
+  <g font-family="Segoe UI, system-ui, sans-serif">
+    <rect x="40" y="96" rx="14" width="240" height="200" fill="#1a2330" stroke="#f0a04b" stroke-width="2"/>
+    <text x="60" y="128" fill="#f0a04b" font-size="12">1 · CODING LANE</text>
+    <text x="60" y="164" fill="#e8eef4" font-size="18" font-weight="700">Code step</text>
+    <text x="60" y="192" fill="#8b9aab" font-size="14">Not chat.</text>
+    <text x="60" y="214" fill="#8b9aab" font-size="14">Not Spark.</text>
+    <text x="60" y="236" fill="#8b9aab" font-size="14">Task class: coding</text>
+    <text x="60" y="268" fill="#8b9aab" font-size="14">Needs a detected CLI.</text>
+
+    <rect x="310" y="96" rx="14" width="240" height="200" fill="#1a2330" stroke="#3ee0c5" stroke-width="2"/>
+    <text x="330" y="128" fill="#3ee0c5" font-size="12">2 · PATH PROBE</text>
+    <text x="330" y="164" fill="#e8eef4" font-size="18" font-weight="700">Usual suspects</text>
+    <text x="330" y="192" fill="#b7c4d2" font-size="14">codex</text>
+    <text x="330" y="214" fill="#b7c4d2" font-size="14">claude</text>
+    <text x="330" y="236" fill="#b7c4d2" font-size="14">grok</text>
+    <text x="330" y="258" fill="#b7c4d2" font-size="14">kimi</text>
+    <text x="330" y="280" fill="#8b9aab" font-size="13">--version only, no login</text>
+
+    <rect x="580" y="96" rx="14" width="240" height="200" fill="#1a2330" stroke="#3d8bfd" stroke-width="2"/>
+    <text x="600" y="128" fill="#3d8bfd" font-size="12">3 · MODELS APPEAR</text>
+    <text x="600" y="164" fill="#e8eef4" font-size="18" font-weight="700">Automatic</text>
+    <text x="600" y="192" fill="#8b9aab" font-size="14">One executable</text>
+    <text x="600" y="214" fill="#8b9aab" font-size="14">→ every declared</text>
+    <text x="600" y="236" fill="#8b9aab" font-size="14">model row for it</text>
+    <text x="600" y="268" fill="#8b9aab" font-size="14">No extra probe</text>
+    <text x="600" y="290" fill="#8b9aab" font-size="14">per model name.</text>
+
+    <rect x="850" y="96" rx="14" width="210" height="200" fill="#1a2330" stroke="#9b8cff" stroke-width="2"/>
+    <text x="870" y="128" fill="#9b8cff" font-size="12">4 · PRINT</text>
+    <text x="870" y="164" fill="#e8eef4" font-size="18" font-weight="700">Headless</text>
+    <text x="870" y="192" fill="#8b9aab" font-size="14">One shot.</text>
+    <text x="870" y="214" fill="#8b9aab" font-size="14">No TUI session.</text>
+    <text x="870" y="236" fill="#8b9aab" font-size="14">Stdout is the</text>
+    <text x="870" y="258" fill="#8b9aab" font-size="14">answer.</text>
+    <text x="870" y="290" fill="#8b9aab" font-size="14">Then the CLI exits.</text>
+  </g>
+
+  <rect x="40" y="320" rx="14" width="1020" height="140" fill="#151c24" stroke="#2a3544"/>
+  <text x="60" y="352" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="15">Example: claude is on PATH → fable, opus, and claude-fable-5-1 are all offered.</text>
+  <text x="60" y="376" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Dispatch fills --model and --print (or that vendor’s one-shot flags) and a prompt.</text>
+  <text x="60" y="400" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">grok, codex, and kimi work the same idea: detect the binary once, list its models,</text>
+  <text x="60" y="424" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">run headless. A missing binary is a refusal, not a silent hop to Spark.</text>
+
+  <rect x="40" y="480" rx="12" width="1020" height="130" fill="#1a2330" stroke="#3ee0c5"/>
+  <text x="60" y="512" fill="#3ee0c5" font-family="Segoe UI, system-ui, sans-serif" font-size="13" letter-spacing="1.2">STILL LOCAL</text>
+  <text x="60" y="540" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="15">Orchestrator / chat / process: Spark on the LAN.</text>
+  <text x="60" y="564" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">This picture is only the coding lane. Spark is not in the PATH probe.</text>
+  <text x="60" y="588" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">A missing CLI is a refusal, not a hop onto Flash-Next.</text>
+</svg>

@@ -1,32 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" role="img" aria-labelledby="t2 d2">
-  <title id="t2">Two ways to attach a cloud coder</title>
-  <desc id="d2">HTTP profile posts to a cloud chat API. CLI harness starts a vendor binary that talks to the cloud. Both are egress external.</desc>
-  <rect width="1100" height="520" fill="#0b0f14"/>
-  <text x="40" y="44" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="24" font-weight="700">Two ways to attach the cloud</text>
-  <text x="40" y="70" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Pick one. Ironclad chooses the model. You do not type a model name into the chat box.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" role="img" aria-labelledby="t2 d2">
+  <title id="t2">Two ways to attach a cloud coder on the coding lane only</title>
+  <desc id="d2">HTTP profile or vendor CLI, both only for the coding task class. Orchestrator stays on Spark.</desc>
+  <rect width="1100" height="540" fill="#0b0f14"/>
+  <text x="40" y="44" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="24" font-weight="700">Coding lane only — two attachments</text>
+  <text x="40" y="70" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Neither of these is llm.orchestrator_profile. That key stays on Spark.</text>
 
   <g font-family="Segoe UI, system-ui, sans-serif">
     <rect x="40" y="100" rx="16" width="500" height="250" fill="#1a2330" stroke="#3ee0c5" stroke-width="2"/>
     <text x="64" y="136" fill="#3ee0c5" font-size="12" letter-spacing="1.2">WAY A · HTTP PROFILE</text>
     <text x="64" y="176" fill="#e8eef4" font-size="20" font-weight="700">OpenAI-compatible API</text>
-    <text x="64" y="210" fill="#b7c4d2" font-size="15">Ironclad POSTs /chat/completions</text>
-    <text x="64" y="236" fill="#8b9aab" font-size="14">config: llm.profiles.&lt;name&gt;</text>
+    <text x="64" y="210" fill="#b7c4d2" font-size="15">Used by the coding route</text>
+    <text x="64" y="236" fill="#8b9aab" font-size="14">POST /chat/completions</text>
     <text x="64" y="258" fill="#8b9aab" font-size="14">egress: external</text>
     <text x="64" y="280" fill="#8b9aab" font-size="14">api_key: ${env:CLOUD_CODER_KEY}</text>
-    <text x="64" y="316" fill="#8b9aab" font-size="14">Works with any /v1 host you allow.</text>
+    <text x="64" y="316" fill="#8b9aab" font-size="14">Not bound as orchestrator_profile.</text>
 
     <rect x="560" y="100" rx="16" width="500" height="250" fill="#1a2330" stroke="#f0a04b" stroke-width="2"/>
     <text x="584" y="136" fill="#f0a04b" font-size="12" letter-spacing="1.2">WAY B · VENDOR CLI</text>
     <text x="584" y="176" fill="#e8eef4" font-size="20" font-weight="700">Coder on PATH</text>
-    <text x="584" y="210" fill="#b7c4d2" font-size="15">Ironclad starts a subprocess</text>
-    <text x="584" y="236" fill="#8b9aab" font-size="14">claude, grok, codex, kimi, …</text>
+    <text x="584" y="210" fill="#b7c4d2" font-size="15">coding task class → subprocess</text>
+    <text x="584" y="236" fill="#8b9aab" font-size="14">codex, claude, grok, kimi, …</text>
     <text x="584" y="258" fill="#8b9aab" font-size="14">The binary talks to the vendor</text>
     <text x="584" y="280" fill="#8b9aab" font-size="14">Auth stays in that CLI’s home</text>
-    <text x="584" y="316" fill="#8b9aab" font-size="14">Missing binary: Ironclad refuses.</text>
+    <text x="584" y="316" fill="#8b9aab" font-size="14">Missing binary: refuse, no fallback.</text>
   </g>
 
-  <rect x="40" y="380" rx="12" width="1020" height="110" fill="#151c24" stroke="#2a3544"/>
-  <text x="60" y="414" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="15">Both are “cloud coder”: the model is not on your GPU.</text>
-  <text x="60" y="440" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Way A is one HTTP profile. Way B is a declared harness. Ironclad does not</text>
-  <text x="60" y="464" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">fall back from CLI to HTTP if the binary is missing. Configure the path you mean.</text>
+  <rect x="40" y="380" rx="12" width="1020" height="130" fill="#151c24" stroke="#2a3544"/>
+  <text x="60" y="414" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="15">Spark still answers chat.</text>
+  <text x="60" y="440" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">If the CLI is missing, Ironclad does not send that code turn to Spark instead.</text>
+  <text x="60" y="464" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Configure the coding route you mean. Leave orchestrator_profile on Spark.</text>
 </svg>
