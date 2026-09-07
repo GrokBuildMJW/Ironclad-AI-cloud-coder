@@ -43,7 +43,7 @@ Ironclad does not ask you to type `claude --model …` for each job. On the **co
 |---|---|
 | `codex` | `gpt-5.6-sol`, `gpt-5.6-terra` |
 | `claude` | `fable`, `opus`, `claude-fable-5-1` |
-| `grok` | `grok-4.6`, `grok-code-fast-1` |
+| `grok` | `grok-4.6` |
 | `kimi` | `kimi-k3`, `kimi-k2.5` |
 
 A missing binary is `INFRA`, not “use Spark instead.” Spark never sits in that PATH list.
