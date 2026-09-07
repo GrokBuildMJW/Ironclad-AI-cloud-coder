@@ -36,13 +36,13 @@ The coding route names that profile. `llm.orchestrator_profile` stays the Spark 
 Ironclad does not ask you to type `claude --model …` for each job. On the **coding lane** it:
 
 1. Probes `PATH` for the usual suspects (`codex`, `claude`, `grok`, `kimi`) with a cheap `--version`. That probe does not log in.
-2. If the **executable** is there, **every declared model row** for that harness is offered. One `claude` binary yields `fable`, `opus`, and `claude-fable-5-1` — there is no second probe per model name.
+2. If the **executable** is there, **every declared model row** for that harness is offered. One `claude` binary yields `fable`, `opus`, `sonnet`, and `claude-fable-5-1` — there is no second probe per model name.
 3. Dispatch is **headless print**: one shot, no TUI. For Claude that is `--print`. The others use the same idea (one-shot flags, stdout is the answer, then exit).
 
 | On PATH | Models that then appear |
 |---|---|
-| `codex` | `gpt-5.6-sol`, `gpt-5.6-terra` |
-| `claude` | `fable`, `opus`, `claude-fable-5-1` |
+| `codex` | `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-atra`, `gpt-5.6-luna` |
+| `claude` | `fable`, `opus`, `sonnet`, `claude-fable-5-1` |
 | `grok` | `grok-4.6` |
 | `kimi` | `kimi-k3`, `kimi-k2.5` |
 

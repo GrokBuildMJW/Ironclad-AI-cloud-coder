@@ -43,7 +43,7 @@
   </g>
 
   <rect x="40" y="320" rx="14" width="1020" height="140" fill="#151c24" stroke="#2a3544"/>
-  <text x="60" y="352" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="15">Example: claude is on PATH → fable, opus, and claude-fable-5-1 are all offered.</text>
+  <text x="60" y="352" fill="#e8eef4" font-family="Segoe UI, system-ui, sans-serif" font-size="15">Example: claude is on PATH → fable, opus, sonnet, and claude-fable-5-1 are all offered.</text>
   <text x="60" y="376" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Dispatch fills --model and --print (or that vendor’s one-shot flags) and a prompt.</text>
   <text x="60" y="400" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">grok, codex, and kimi work the same idea: detect the binary once, list its models,</text>
   <text x="60" y="424" fill="#8b9aab" font-family="Segoe UI, system-ui, sans-serif" font-size="14">run headless. A missing binary is a refusal, not a silent hop to Spark.</text>
