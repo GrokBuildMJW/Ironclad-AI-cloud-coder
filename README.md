@@ -36,15 +36,19 @@ The coding route names that profile. `llm.orchestrator_profile` stays the Spark 
 Ironclad does not ask you to type `claude --model …` for each job. On the **coding lane** it:
 
 1. Probes `PATH` for the usual suspects (`codex`, `claude`, `grok`, `kimi`) with a cheap `--version`. That probe does not log in.
-2. If the **executable** is there, **every declared model row** for that harness is offered. One `claude` binary yields `fable`, `opus`, `sonnet`, and `claude-fable-5-1` — there is no second probe per model name.
-3. Dispatch is **headless print**: one shot, no TUI. For Claude that is `--print`. The others use the same idea (one-shot flags, stdout is the answer, then exit).
+2. If the **executable** is there, **every declared model row** for that harness is offered. One `claude` binary yields `fable`, `opus`, and `sonnet` — there is no second probe per model name.
+3. Dispatch is **headless print**: one shot, no TUI. Claude: `--print`. Codex: `exec`. Grok: `--output-format plain --single`. Kimi: `--prompt`. Stdout is the answer, then the CLI exits.
 
-| On PATH | Models that then appear |
-|---|---|
-| `codex` | `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-6-astra`, `gpt-5.6-luna` |
-| `claude` | `fable`, `opus`, `sonnet`, `claude-fable-5-1` |
-| `grok` | `grok-4.6` |
-| `kimi` | `kimi-k3`, `kimi-k2.5` |
+Probed on a logged-in Windows host (2026-09-07): Codex 0.153.2, Claude Code 2.1.263, Grok 1.0.13, Kimi 0.34.0.
+
+| On PATH | How we listed models | Coding-lane set |
+|---|---|---|
+| `codex` | live `models_cache.json` (9 slugs). Default in `config.toml`: `gpt-5.6-sol` | `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna` |
+| `claude` | `--help` aliases | `fable`, `opus`, `sonnet` |
+| `grok` | `grok models` | `grok-4.6` (default), `grok-4.5` |
+| `kimi` | `kimi provider list --json` | `k3` (default), `k3-256k`, `kimi-for-coding`, `kimi-for-coding-highspeed` |
+
+Codex also advertised `gpt-5.5`, `gpt-5.4-mini`, `gpt-5.3-codex-spark`, `gpt-reserve`, and `codex-auto-review`. Those are not the coding-lane pin. Claude’s help example for a full name is `claude-fable-5`; the aliases above are what `--model` documents.
 
 A missing binary is `INFRA`, not “use Spark instead.” Spark never sits in that PATH list.
 
